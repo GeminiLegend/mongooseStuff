@@ -14,7 +14,6 @@
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.2",
     "gulp-concat": "^2.6.0",
-    "gulp-jade": "^1.1.0",
     "gulp-jshint": "^1.11.2",
     "gulp-notify": "^2.2.0",
     "gulp-rename": "^1.2.2",
@@ -23,7 +22,6 @@
     "gulp-util": "^3.0.6",
     "jshint-stylish": "^2.0.1",
     "rename": "^1.0.3",
-    "uglify-js": "^2.4.24",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }
