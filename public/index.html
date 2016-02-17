@@ -1,11 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<link rel="stylesheet" type="text/css" href="./styles/css/styles.css">
 	<meta charset="UTF-8">
 	<title>zillow</title>
 </head>
-<body>
+<body ng-app='CompsApp'>
 	
-	<script src='/dist/app.bundle.js'> </script>
+	<div id="comps" ng-controller="ZillowController">
+		<input id="addresssearch" type="text" ng-model="query" autofocus placeholder="Seach listings...">
+		<ul class='houselist'>
+			<li class='listing' ng-repeat="comp in comps.comparables.comp | filter:query">
+				<h4 class='street'>
+					{{comp.address.street}}
+				</h4>
+				<p class='citystatezipcode'>
+					{{comp.address.city}}, {{comp.address.state}} {{comp.address.zipcode}}
+				</p>
+				<p class='info'>
+					Zestimate: <span>{{comp.zestimate.amount['__text'] | currency:'$':0}}</span> | Zpid: {{comp.zpid}}
+				</p>
+			</li>
+		</ul>	
+	</div>
+
+	<script src='../bower_components/angular/angular.min.js'> </script>
+	<script src='./js/main.js'> </script>
+	<script src='../bower_components/abdmob/x2js/xml2json.min.js'> </script>
+	<script src='./dist/app.bundle.js'> </script>
 </body>
 </html>

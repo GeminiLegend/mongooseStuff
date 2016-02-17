@@ -58,9 +58,10 @@ gulp.task('sass', function() {
 });
 
 gulp.task('serve', function(){
+    console.log(paths.sass);
     gulp.watch(paths.sass, ['sass']);
     gulp.watch(paths.js,   ['lint', 'scripts']);
-    gulp.watch(['./public/*.html']).on('change', browserSync.reload);
+    // gulp.watch(['./public/*.html']).on('change', browserSync.reload);
 });
 
 gulp.task('default', ['js', 'sass', 'serve']);
