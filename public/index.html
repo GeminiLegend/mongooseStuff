@@ -8,6 +8,8 @@
 <body ng-app='CompsApp'>
 	
 	<div id="comps" ng-controller="ZillowController">
+		<input id="addressinput" type="text" placeholder="Enter your address" value="9770 hillside dr">
+		<input id="zipcodeinput" type="text" placeholder="Enter your zipcode" value="Roswell GA">
 		<input id="addresssearch" type="text" ng-model="query" autofocus placeholder="Seach listings...">
 		<ul class='houselist'>
 			<li class='listing' ng-repeat="comp in comps.comparables.comp | filter:query">

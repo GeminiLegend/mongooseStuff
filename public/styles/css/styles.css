@@ -63,6 +63,28 @@ body {
     -webkit-border-radius: 4px;
             border-radius: 4px;
     border: 1px solid #ccc; }
+  #comps #addressinput {
+    width: 65%;
+    margin: 0 auto 10px;
+    display: block;
+    font-size: 12pt;
+    padding: 4px 7px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    -webkit-border-radius: 4px;
+            border-radius: 4px;
+    border: 1px solid #ccc; }
+  #comps #zipcodeinput {
+    width: 65%;
+    margin: 0 auto 10px;
+    display: block;
+    font-size: 12pt;
+    padding: 4px 7px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    -webkit-border-radius: 4px;
+            border-radius: 4px;
+    border: 1px solid #ccc; }
   #comps .houselist {
     width: 65%;
     margin: 0 auto;
