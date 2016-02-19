@@ -50,41 +50,46 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 11pt; }
 
+.wrapper {
+  position: relative;
+  overflow: hidden;
+  min-height: 500px; }
+
 #comps {
-  margin: 150px auto 0; }
+  position: absolute;
+  top: 150px;
+  right: 5%;
+  width: 45%;
+  height: 100%; }
+  #comps .address {
+    width: 100%;
+    margin: 0 auto 10px;
+    display: block;
+    font-size: 12pt;
+    padding: 4px 7px;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    -webkit-border-radius: 4px;
+            border-radius: 4px;
+    border: 1px solid #ccc; }
   #comps #addresssearch {
+    display: none; }
+  #comps #zpidlookup {
     width: 65%;
     margin: 0 auto 10px;
     display: block;
     font-size: 12pt;
-    padding: 4px 7px;
+    padding: 7px 10px 8px;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    -webkit-border-radius: 4px;
-            border-radius: 4px;
-    border: 1px solid #ccc; }
-  #comps #addressinput {
-    width: 65%;
-    margin: 0 auto 10px;
-    display: block;
-    font-size: 12pt;
-    padding: 4px 7px;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    -webkit-border-radius: 4px;
-            border-radius: 4px;
-    border: 1px solid #ccc; }
-  #comps #zipcodeinput {
-    width: 65%;
-    margin: 0 auto 10px;
-    display: block;
-    font-size: 12pt;
-    padding: 4px 7px;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    -webkit-border-radius: 4px;
-            border-radius: 4px;
-    border: 1px solid #ccc; }
+    -webkit-border-radius: 2px;
+            border-radius: 2px;
+    border: 1px solid #0a5dd1;
+    color: #fff;
+    background: #3384F5; }
+    #comps #zpidlookup:hover {
+      background: #0a5dd1;
+      cursor: pointer; }
   #comps .houselist {
     width: 65%;
     margin: 0 auto;

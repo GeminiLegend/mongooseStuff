@@ -9837,25 +9837,31 @@ window.Api = require('./zillow/api');
 
 Api.initialize($, 'zillow.com/api/v1');
 
-// Api.addressLookup(Api.endpoints.getsearchresults, Api.apiKey).then(function(){
-	// Api.fetchComps(Api.endpoints.comps, Api.apiKey, zpid, 25);
-// });
+$('#zpidlookup').on('click', submitZpidLookup);
 
-Api.addressLookup(Api.endpoints.getsearchresults, Api.apiKey).done(function(resp){
-	Api.xml2json(resp);
-	window.zpid = result.searchresults.response.results.result.zpid;
-	Api.fetchComps(Api.endpoints.comps, Api.apiKey, zpid, 25).done(function(resp){
-		Api.xml2json(resp);
-		window.compsdata = result.comps.response.properties.comparables;
+function submitZpidLookup(evt){
+	evt.preventDefault();
+	
+	$('.houselist').find('li').remove();
+
+	var address    = $('#address').val();
+	var citystate  = $('#citystate').val();
+	var zip 	   = $('#zip').val();
+	
+	Api.addressLookup(Api.endpoints.getsearchresults, Api.apiKey, address, zip).done(function(resp){
+		var zpid_response 	= Api.xml2json(resp).searchresults.response.results.result;
+		var zpid 			= zpid_response.zpid;
+
+		Api.fetchComps(Api.endpoints.comps, Api.apiKey, zpid, 25).done(function(resp){
+			var json 			= Api.xml2json(resp);
+			var compsResp 		= json.comps.response.properties;
+
+			window.$scope.compsdata = compsResp.comparables.comp;
+			window.$scope.$apply();
+		});
 	});
-});
 
-
-// Api.fetchComps(Api.endpoints.comps, Api.apiKey, result, 25).done(function(resp){
-// 	var x2js = new X2JS();
-// 	window.$scope.comps = x2js.xml_str2json(resp).comps.response.properties;
-// 	$scope.$apply();
-// });
+}
 
 },{"./zillow/api":3,"jquery":1}],3:[function(require,module,exports){
 
@@ -9868,24 +9874,28 @@ Api.endpoints = {
 	comps: 'http://www.zillow.com/webservice/GetComps.htm',
 	getsearchresults: 'http://www.zillow.com/webservice/GetSearchResults.htm'
 };
-Api.address = $('#addressinput').val();
-Api.zipcode = $('#zipcodeinput').val();
 
-// http://www.zillow.com/webservice/GetSearchResults.htm?zws-id=<ZWSID>&address=2114+Bigelow+Ave&citystatezip=Seattle%2C+WA
-// s 	= encodeURI('9770 hillside dr')
-// csz = encodeURI('Roswell GA');
+/*
+6614 Hidden Cove Dr
+Davie Fl
+33314
+*/
 
-// http://www.zillow.com/webservice/GetSearchResults.htm?zws-id=X1-ZWz1f5yx3rj1fv_6sext&address=9770%20hillside%20dr&citystatezip=Roswell%20GA
+Api.addressLookup = function(endpoint, apiKey, address, citystate, zip) {
+	var url;
+	var address 	= address;
+	var citystate 	= citystate;
+	var zipcode 	= zip;
 
-// address = 'http://www.zillow.com/webservice/GetSearchResults.htm?zws-id=X1-ZWz1f5yx3rj1fv_6sext&address='+ encodeURI('9770 hillside dr') + '&citystatezip=' + encodeURI('Roswell GA')
+	url = endpoint + '?zws-id=' + Api.apiKey + '&address=' + address + '&citystatezip=' + citystate;
+	url = encodeURI(url);
 
-Api.addressLookup = function(endpoint, apiKey) {
-	var address = Api.address;
-	var zipcode = Api.zipcode;
-	var url = endpoint + '?zws-id=' + Api.apiKey + '&address=' + address + '&citystatezip=' + zipcode;
+	console.log('zillow url: http://www.zillow.com/webservice/GetSearchResults.htm?zws-id=<ZWSID>&address=2114+Bigelow+Ave&citystatezip=Seattle%2C+WA');
+	console.log('our url: ', url);
+
 	return $.ajax({
 		url: 'http://localhost:5000/api/comps',
-		type: 'GET',
+		type: 'POST',
 		data: {
 			url: url,
 		}
@@ -9894,17 +9904,17 @@ Api.addressLookup = function(endpoint, apiKey) {
 
 Api.xml2json = function(resp){
 	var x2js = new X2JS();
-	window.$scope.xml2json = x2js.xml_str2json(resp);
-	window.result = window.$scope.xml2json;
-	// $scope.$apply();
+	var json = x2js.xml_str2json(resp);
+	
+	return json;
 };
 
 Api.fetchComps = function(endpoint, apiKey, zpid, count){
 	// http://www.zillow.com/webservice/GetComps.htm?zws-id=X1-ZWz1f5yx3rj1fv_6sext&zpid=14671441&count=5
 	var url = endpoint + '?zws-id=' + Api.apiKey + '&zpid=' + zpid + '&count=' + count;
 	return $.ajax({
-		url: 'http://localhost:5000/api/comps',
-		type: 'GET',
+		url: 'http://localhost:5000/api/fetchComps',
+		type: 'POST',
 		data: {
 			url: url
 		}

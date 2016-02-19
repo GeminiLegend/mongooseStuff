@@ -20,8 +20,20 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/api/comps', function (req, res) {
-	var url = req.query.url;
+app.post('/api/comps', function (req, res) {
+	var url = req.body.url;
+
+	request(url, function (error, response, body) {
+	  if (!error && response.statusCode == 200) {
+	    // console.log(body) // Print the google web page.
+	    res.send(body);
+	  }
+	});
+});
+
+app.post('/api/fetchComps', function (req, res) {
+	var url = req.body.url;
+
 	request(url, function (error, response, body) {
 	  if (!error && response.statusCode == 200) {
 	    // console.log(body) // Print the google web page.
