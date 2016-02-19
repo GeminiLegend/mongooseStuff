@@ -9837,8 +9837,17 @@ window.Api = require('./zillow/api');
 
 Api.initialize($, 'zillow.com/api/v1');
 
-Api.addressLookup(Api.endpoints.getsearchresults, Api.apiKey).then(function(){
-	Api.fetchComps(Api.endpoints.comps, Api.apiKey, zpid, 25);
+// Api.addressLookup(Api.endpoints.getsearchresults, Api.apiKey).then(function(){
+	// Api.fetchComps(Api.endpoints.comps, Api.apiKey, zpid, 25);
+// });
+
+Api.addressLookup(Api.endpoints.getsearchresults, Api.apiKey).done(function(resp){
+	Api.xml2json(resp);
+	window.zpid = result.searchresults.response.results.result.zpid;
+	Api.fetchComps(Api.endpoints.comps, Api.apiKey, zpid, 25).done(function(resp){
+		Api.xml2json(resp);
+		window.compsdata = result.comps.response.properties.comparables;
+	});
 });
 
 
@@ -9880,10 +9889,7 @@ Api.addressLookup = function(endpoint, apiKey) {
 		data: {
 			url: url,
 		}
-	}).done(function(resp){
-		Api.xml2json(resp);
-		window.zpid = result.searchresults.response.results.result.zpid;
-	});
+	})
 };
 
 Api.xml2json = function(resp){
@@ -9902,10 +9908,7 @@ Api.fetchComps = function(endpoint, apiKey, zpid, count){
 		data: {
 			url: url
 		}
-	}).done(function(resp){
-		Api.xml2json(resp);
-		window.compdata = result.comps.response.properties;
-	});
+	})
 };
 
 Api.initialize = function($, baseUrl) {

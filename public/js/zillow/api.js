@@ -29,10 +29,7 @@ Api.addressLookup = function(endpoint, apiKey) {
 		data: {
 			url: url,
 		}
-	}).done(function(resp){
-		Api.xml2json(resp);
-		window.zpid = result.searchresults.response.results.result.zpid;
-	});
+	})
 };
 
 Api.xml2json = function(resp){
@@ -51,10 +48,7 @@ Api.fetchComps = function(endpoint, apiKey, zpid, count){
 		data: {
 			url: url
 		}
-	}).done(function(resp){
-		Api.xml2json(resp);
-		window.compdata = result.comps.response.properties;
-	});
+	})
 };
 
 Api.initialize = function($, baseUrl) {
