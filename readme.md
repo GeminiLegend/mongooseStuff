@@ -11,4 +11,12 @@ use input to specify a zipcode for the api call
 	their address zipcode and zpid
 	directly insert that into the getcomps api to return all the comps in their area
 	insert that into get comps api to pull comps form surrounding area
+	AIzaSyDi1ZZxwAYZsDKiz5D0CFm3tGTuHNmGtNc
  -->
+ Clicking search comps should:
+ 1. fade in comps
+ 2. fade in the filter bar
+ 3. hide the search inputs
+
+ Clicking a comp should:
+ 1. set map display to visible (initially none);

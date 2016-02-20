@@ -1,3 +1,2 @@
-js/vendors
+public/js/vendors
 node_modules
-bower_components

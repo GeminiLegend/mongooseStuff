@@ -6,13 +6,15 @@ var Api = {};
 Api.apiKey = 'X1-ZWz1f5yx3rj1fv_6sext';
 Api.endpoints = {
 	comps: 'http://www.zillow.com/webservice/GetComps.htm',
-	getsearchresults: 'http://www.zillow.com/webservice/GetSearchResults.htm'
+	getsearchresults: 'http://www.zillow.com/webservice/GetSearchResults.htm',
+	getphotos: 'http://www.zillow.com/webservice/GetUpdatedPropertyDetails.htm'
 };
 
 /*
 6614 Hidden Cove Dr
 Davie Fl
 33314
+AIzaSyDi1ZZxwAYZsDKiz5D0CFm3tGTuHNmGtNc
 */
 
 Api.addressLookup = function(endpoint, apiKey, address, citystate, zip) {
@@ -23,9 +25,6 @@ Api.addressLookup = function(endpoint, apiKey, address, citystate, zip) {
 
 	url = endpoint + '?zws-id=' + Api.apiKey + '&address=' + address + '&citystatezip=' + citystate;
 	url = encodeURI(url);
-
-	console.log('zillow url: http://www.zillow.com/webservice/GetSearchResults.htm?zws-id=<ZWSID>&address=2114+Bigelow+Ave&citystatezip=Seattle%2C+WA');
-	console.log('our url: ', url);
 
 	return $.ajax({
 		url: 'http://localhost:5000/api/comps',
@@ -48,6 +47,17 @@ Api.fetchComps = function(endpoint, apiKey, zpid, count){
 	var url = endpoint + '?zws-id=' + Api.apiKey + '&zpid=' + zpid + '&count=' + count;
 	return $.ajax({
 		url: 'http://localhost:5000/api/fetchComps',
+		type: 'POST',
+		data: {
+			url: url
+		}
+	})
+};
+
+Api.getPhotos = function(endpoint, apiKey, zpid){
+	var url = endpoint + '?zws-id=' + Api.apiKey + '&zpid=' + zpid;
+	return $.ajax({
+		url: 'http://localhost:5000/api/getPhotos',
 		type: 'POST',
 		data: {
 			url: url

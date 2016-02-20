@@ -42,6 +42,34 @@ app.post('/api/fetchComps', function (req, res) {
 	});
 });
 
+app.post('/api/getPhotos', function (req, res) {
+	var url = req.body.url;
+	console.log('get photos: ' + url);
+
+	request(url, function (error, response, body) {
+		console.log('get photos request');
+	  if (!error && response.statusCode == 200) {
+	    // console.log(body) // Print the google web page.
+	    res.send(body);
+	  }
+	});
+});
+
+app.post('/api/loadPhotos', function (req, res) {
+	var url = req.body.url;
+	console.log('loading photos: ' + url);
+
+	request(url, function (error, response, body) {
+	  if (!error && response.statusCode == 200) {
+	    // console.log(body) // Print the google web page.
+	    res.send(body);
+	  } else {
+	  	console.log(error);
+	  }
+	});
+});
+
+
 app.listen(port, function () {
   console.log('Example app listening on port 5000!');
 });

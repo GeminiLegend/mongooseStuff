@@ -52,17 +52,31 @@ body {
 
 .wrapper {
   position: relative;
-  overflow: hidden;
+  /*overflow: hidden;*/
   min-height: 500px; }
+
+#map {
+  min-height: 400px;
+  min-width: 400px;
+  width: 77%;
+  height: 99%;
+  position: absolute;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  top: 50px;
+  margin: 0 0 0 5px;
+  /*border: 1px solid #ccc;*/ }
 
 #comps {
   position: absolute;
-  top: 150px;
-  right: 5%;
-  width: 45%;
-  height: 100%; }
+  top: 50px;
+  right: 1%;
+  width: 20%;
+  height: 100%;
+  /*overflow: auto;*/ }
   #comps .address {
     width: 100%;
+    height: 5%;
     margin: 0 auto 10px;
     display: block;
     font-size: 12pt;
@@ -75,11 +89,11 @@ body {
   #comps #addresssearch {
     display: none; }
   #comps #zpidlookup {
-    width: 65%;
+    width: 100%;
     margin: 0 auto 10px;
     display: block;
     font-size: 12pt;
-    padding: 7px 10px 8px;
+    padding: 5px 10px 6px;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
     -webkit-border-radius: 2px;
@@ -91,7 +105,7 @@ body {
       background: #0a5dd1;
       cursor: pointer; }
   #comps .houselist {
-    width: 65%;
+    width: 99%;
     margin: 0 auto;
     list-style: none; }
     #comps .houselist .listing {
@@ -112,3 +126,8 @@ body {
         color: #3384F5;
         font-size: 14pt;
         font-weight: bold; }
+
+#photos {
+  position: absolute;
+  top: 110%;
+  left: 2%; }

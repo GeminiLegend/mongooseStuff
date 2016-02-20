@@ -9832,25 +9832,27 @@ return jQuery;
 }));
 
 },{}],2:[function(require,module,exports){
-window.$ = require('jquery');
-window.Api = require('./zillow/api');
+window.$ 	= require('jquery');
+window.Api 	= require('./zillow/api');
+Api.target 	= {};
 
 Api.initialize($, 'zillow.com/api/v1');
 
 $('#zpidlookup').on('click', submitZpidLookup);
+$('.houselist').on('click', '.listing', buildMap);
 
 function submitZpidLookup(evt){
 	evt.preventDefault();
 	
 	$('.houselist').find('li').remove();
 
-	var address    = $('#address').val();
-	var citystate  = $('#citystate').val();
-	var zip 	   = $('#zip').val();
+	Api.target.address    	= $('#address').val();
+	Api.target.citystate  	= $('#citystate').val();
+	Api.target.zip 	   		= $('#zip').val();
 	
-	Api.addressLookup(Api.endpoints.getsearchresults, Api.apiKey, address, zip).done(function(resp){
+	Api.addressLookup(Api.endpoints.getsearchresults, Api.apiKey, Api.target.address, Api.target.zip).done(function(resp){
 		var zpid_response 	= Api.xml2json(resp).searchresults.response.results.result;
-		var zpid 			= zpid_response.zpid;
+		var zpid 			= Api.target.zpid = zpid_response.zpid;
 
 		Api.fetchComps(Api.endpoints.comps, Api.apiKey, zpid, 25).done(function(resp){
 			var json 			= Api.xml2json(resp);
@@ -9858,9 +9860,54 @@ function submitZpidLookup(evt){
 
 			window.$scope.compsdata = compsResp.comparables.comp;
 			window.$scope.$apply();
+
+			$('.address').slideUp(100);
+			$('#addresssearch').slideDown(100);
 		});
 	});
+}
 
+function displayListingInfo() {
+	var map 	= Api.target.map;
+	var marker 	= Api.target.marker;
+}
+
+function buildMap(evt){
+	evt.preventDefault();
+	var $target = $(evt.currentTarget);
+
+	Api.target.zpid 			= $target.find('#zpid').html();
+	Api.target.address 			= $target.find('.street').html().trim();
+	Api.target.citystatezipcode = $target.find('.citystatezipcode').html().trim();
+
+	var long = $target.data('long');
+	var lat = $target.data('lat');
+
+	var myLatlng = {lat: lat, lng: long}
+	var mapOptions = {
+	  zoom: 16,
+	  center: myLatlng,
+	};
+
+	var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+	var marker = new google.maps.Marker({
+	    position: myLatlng,
+	    map: map,
+	    title: Api.target.address
+	});
+
+	Api.target.map 		= map;
+	Api.target.marker 	= marker;
+
+	google.maps.event.addListener(marker, 'click', displayListingInfo);
+
+	Api.getPhotos(Api.endpoints.getphotos, Api.apiKey, Api.target.zpid).done(function(resp){
+		var resp 			= Api.xml2json(resp).updatedPropertyDetails.response;
+		var photoLink 		= resp.links.photoGallery;
+
+		$('#photos .photoLink').attr('href', photoLink);
+	});
 }
 
 },{"./zillow/api":3,"jquery":1}],3:[function(require,module,exports){
@@ -9872,13 +9919,15 @@ var Api = {};
 Api.apiKey = 'X1-ZWz1f5yx3rj1fv_6sext';
 Api.endpoints = {
 	comps: 'http://www.zillow.com/webservice/GetComps.htm',
-	getsearchresults: 'http://www.zillow.com/webservice/GetSearchResults.htm'
+	getsearchresults: 'http://www.zillow.com/webservice/GetSearchResults.htm',
+	getphotos: 'http://www.zillow.com/webservice/GetUpdatedPropertyDetails.htm'
 };
 
 /*
 6614 Hidden Cove Dr
 Davie Fl
 33314
+AIzaSyDi1ZZxwAYZsDKiz5D0CFm3tGTuHNmGtNc
 */
 
 Api.addressLookup = function(endpoint, apiKey, address, citystate, zip) {
@@ -9889,9 +9938,6 @@ Api.addressLookup = function(endpoint, apiKey, address, citystate, zip) {
 
 	url = endpoint + '?zws-id=' + Api.apiKey + '&address=' + address + '&citystatezip=' + citystate;
 	url = encodeURI(url);
-
-	console.log('zillow url: http://www.zillow.com/webservice/GetSearchResults.htm?zws-id=<ZWSID>&address=2114+Bigelow+Ave&citystatezip=Seattle%2C+WA');
-	console.log('our url: ', url);
 
 	return $.ajax({
 		url: 'http://localhost:5000/api/comps',
@@ -9914,6 +9960,17 @@ Api.fetchComps = function(endpoint, apiKey, zpid, count){
 	var url = endpoint + '?zws-id=' + Api.apiKey + '&zpid=' + zpid + '&count=' + count;
 	return $.ajax({
 		url: 'http://localhost:5000/api/fetchComps',
+		type: 'POST',
+		data: {
+			url: url
+		}
+	})
+};
+
+Api.getPhotos = function(endpoint, apiKey, zpid){
+	var url = endpoint + '?zws-id=' + Api.apiKey + '&zpid=' + zpid;
+	return $.ajax({
+		url: 'http://localhost:5000/api/getPhotos',
 		type: 'POST',
 		data: {
 			url: url
