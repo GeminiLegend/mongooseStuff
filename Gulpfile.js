@@ -17,7 +17,7 @@ var paths           = {
     'sass'            : './public/styles/sass/**/*.scss',
     'css'             : './public/styles/css/',
     'js'              : './public/js/**/*.js',
-    'frontEntryPoint' : 'public/js/app.js'
+    'frontEntryPoint' : './public/js/app.js'
 }
 
 browserSync.init({
