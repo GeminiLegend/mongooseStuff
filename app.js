@@ -2,11 +2,16 @@ var express = require('express');
 var app = express();
 var request = require('request');
 var util = require('util');
+var mongoose = require('mongoose');
 
 var bodyParser     	= require('body-parser');
 var methodOverride 	= require('method-override');
 
 var port 			= process.env.PORT || 5000; 
+
+var http = require('http'),  
+    db = require('./public/model/db.js'),
+    pages = require('./public/pages');
 
 //Middleware
 app.use(bodyParser.json()); 

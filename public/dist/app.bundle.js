@@ -11874,5 +11874,5 @@ return jQuery;
 },{}],3:[function(require,module,exports){
 window.$ 		= require('jquery');
 window.fancybox = require('fancybox');
-Api.target 		= {};
+
 },{"fancybox":1,"jquery":2}]},{},[3]);
